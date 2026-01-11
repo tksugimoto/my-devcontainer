@@ -1,12 +1,14 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
 {
 	"name": "Node.js & TypeScript & Claude Code",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
+	"image": "mcr.microsoft.com/devcontainers/base:trixie",
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
+		"ghcr.io/devcontainers/features/node:1": {
+			"version": "24"
+		},
 		"ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
 	},
 
@@ -15,11 +17,10 @@
 		3000
 	],
 
-	"remoteUser": "node",
 	"mounts": [{
 		"source": "${localWorkspaceFolderBasename}-node_modules",
 		"target": "${containerWorkspaceFolder}/node_modules",
 		"type": "volume"
 	}],
-	"postCreateCommand": "sudo chown node node_modules"
+	"postCreateCommand": "sudo chown vscode node_modules"
 }
