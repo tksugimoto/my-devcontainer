@@ -1,0 +1,14 @@
+{
+    "id": "node-modules-volume",
+    "version": "1.0.0",
+    "name": "Node Modules Volume Mount",
+    "description": "Mounts node_modules as a named volume and sets proper ownership",
+    "mounts": [
+        {
+            "source": "${localWorkspaceFolderBasename}-node_modules",
+            "target": "${containerWorkspaceFolder}/node_modules",
+            "type": "volume"
+        }
+    ],
+    "postCreateCommand": "sudo chown vscode ${containerWorkspaceFolder}/node_modules"
+}

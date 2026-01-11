@@ -9,18 +9,12 @@
 		"ghcr.io/devcontainers/features/node:1": {
 			"version": "24"
 		},
-		"ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
+		"ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {},
+		"./features/node-modules-volume": {}
 	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
 		3000
-	],
-
-	"mounts": [{
-		"source": "${localWorkspaceFolderBasename}-node_modules",
-		"target": "${containerWorkspaceFolder}/node_modules",
-		"type": "volume"
-	}],
-	"postCreateCommand": "sudo chown vscode node_modules"
+	]
 }
