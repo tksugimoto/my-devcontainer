@@ -5,7 +5,7 @@
     "description": "Mounts node_modules as a named volume and sets proper ownership",
     "mounts": [
         {
-            "source": "${localWorkspaceFolderBasename}-node_modules",
+            "source": "node_modules-${devcontainerId}",
             "target": "${containerWorkspaceFolder}/node_modules",
             "type": "volume"
         }
