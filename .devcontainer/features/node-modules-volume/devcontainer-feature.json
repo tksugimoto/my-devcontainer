@@ -3,19 +3,12 @@
     "version": "1.0.0",
     "name": "Node Modules Volume Mount",
     "description": "Mounts node_modules as a named volume and sets proper ownership",
-    "options": {
-        "target": {
-            "type": "string",
-            "default": "/workspaces/project/node_modules",
-            "description": "The target path for the node_modules symlink"
-        }
-    },
     "mounts": [
         {
             "source": "${localWorkspaceFolderBasename}-node_modules",
-            "target": "/mnt/node_modules_volume",
+            "target": "${containerWorkspaceFolder}/node_modules",
             "type": "volume"
         }
     ],
-    "postCreateCommand": "setup-node-modules-symlink"
+    "postCreateCommand": "sudo chown vscode ${containerWorkspaceFolder}/node_modules"
 }
