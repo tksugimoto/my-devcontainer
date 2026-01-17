@@ -10,5 +10,5 @@
             "type": "volume"
         }
     ],
-    "postCreateCommand": "sudo chown vscode ${containerWorkspaceFolder}/node_modules"
+    "postCreateCommand": "sudo chown $(whoami) ${containerWorkspaceFolder}/node_modules"
 }
