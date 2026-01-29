@@ -13,6 +13,19 @@
 		"./features/node-modules-volume": {}
 	},
 
+	"postCreateCommand": "mkdir -p ~/.claude && cp .devcontainer/claude-settings.json ~/.claude/settings.json",
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"terminal.integrated.bellDuration": 60000,
+				"terminal.integrated.enableVisualBell": true,
+				"accessibility.signals.terminalBell": {
+					"sound": "on"
+				}
+			}
+		}
+	},
+
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
 		3000
