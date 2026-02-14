@@ -1,0 +1,18 @@
+{
+	"id": "claude-code-bell",
+	"version": "1.0.0",
+	"name": "Claude Code Bell",
+	"description": "Notifies via terminal bell when Claude Code completes a task",
+	"postCreateCommand": "mkdir -p ~/.claude && cp .devcontainer/features/claude-code-bell/claude-settings.json ~/.claude/settings.json",
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"terminal.integrated.bellDuration": 60000,
+				"terminal.integrated.enableVisualBell": true,
+				"accessibility.signals.terminalBell": {
+					"sound": "on"
+				}
+			}
+		}
+	}
+}

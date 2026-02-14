@@ -10,20 +10,8 @@
 			"version": "24"
 		},
 		"ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {},
+		"./features/claude-code-bell": {},
 		"./features/node-modules-volume": {}
-	},
-
-	"postCreateCommand": "mkdir -p ~/.claude && cp .devcontainer/claude-settings.json ~/.claude/settings.json",
-	"customizations": {
-		"vscode": {
-			"settings": {
-				"terminal.integrated.bellDuration": 60000,
-				"terminal.integrated.enableVisualBell": true,
-				"accessibility.signals.terminalBell": {
-					"sound": "on"
-				}
-			}
-		}
 	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
