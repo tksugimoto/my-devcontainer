@@ -13,6 +13,14 @@ VS Code Dev Containers 上で動作する開発環境を提供します。
 - **Claude Code**: `ghcr.io/anthropics/devcontainer-features/claude-code:1.0` による Anthropic 公式 CLI の統合
 - **ポートフォワーディング**: ポート 3000 を自動転送
 
+### カスタム Feature: claude-code-bell
+
+Claude Code のタスク完了時にターミナルベルで通知するカスタム Dev Container Feature です。
+
+- Claude Code の Stop フックでターミナルベル (`\a`) を送出
+- VS Code のビジュアルベルとサウンドを自動で有効化
+- ベル持続時間を 60 秒に設定し、通知を見逃しにくくする
+
 ### カスタム Feature: node-modules-volume
 
 `node_modules` を Docker の名前付きボリュームとしてマウントするカスタム Dev Container Feature です。
@@ -34,8 +42,12 @@ VS Code Dev Containers 上で動作する開発環境を提供します。
 .devcontainer/
 ├── devcontainer.json                          # Dev Container 設定
 └── features/
+    ├── claude-code-bell/
+    │   ├── devcontainer-feature.json          # Feature 定義
+    │   ├── claude-settings.json               # Claude Code のフック設定
+    │   └── install.sh                         # Feature インストールスクリプト
     └── node-modules-volume/
-        ├── devcontainer-feature.json          # カスタム Feature 定義
+        ├── devcontainer-feature.json          # Feature 定義
         └── install.sh                         # Feature インストールスクリプト
 ```
 
