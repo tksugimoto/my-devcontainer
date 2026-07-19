@@ -2,11 +2,10 @@
     "hooks": {
         "Stop": [
             {
-                "matcher": "",
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "echo -e '\\a' > /dev/tty"
+                        "command": "$HOME/.claude/bell.sh"
                     }
                 ]
             }
