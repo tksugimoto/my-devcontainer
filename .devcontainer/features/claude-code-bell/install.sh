@@ -5,7 +5,13 @@
 set -e
 cd "$(dirname "$0")"
 
-command -v jq >/dev/null || { apt-get update && apt-get install -y --no-install-recommends jq; }
+# jq parses the hook payload at runtime and merges the settings fragment below.
+# It ships in the devcontainer base images, so this normally does nothing.
+if ! command -v jq >/dev/null; then
+  apt-get update
+  apt-get install -y --no-install-recommends jq
+  rm -rf /var/lib/apt/lists/*
+fi
 
 dest="${_REMOTE_USER_HOME:-$HOME}/.claude"
 mkdir -p "$dest"
