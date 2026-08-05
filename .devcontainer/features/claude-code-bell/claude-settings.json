@@ -1,7 +1,29 @@
 {
     "hooks": {
+        "PreToolUse": [
+            {
+                "matcher": "AskUserQuestion",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "$HOME/.claude/bell.sh"
+                    }
+                ]
+            }
+        ],
         "Stop": [
             {
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "$HOME/.claude/bell.sh"
+                    }
+                ]
+            }
+        ],
+        "Notification": [
+            {
+                "matcher": "permission_prompt|agent_needs_input|elicitation_dialog",
                 "hooks": [
                     {
                         "type": "command",
