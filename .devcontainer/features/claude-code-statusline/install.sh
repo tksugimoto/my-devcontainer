@@ -6,10 +6,12 @@ set -e
 cd "$(dirname "$0")"
 
 # jq parses the status line JSON; tzdata backs the TZ set in devcontainer.json.
-pkgs=""
-command -v jq >/dev/null || pkgs="$pkgs jq"
-[ -d /usr/share/zoneinfo ] || pkgs="$pkgs tzdata"
-[ -n "$pkgs" ] && { apt-get update && apt-get install -y --no-install-recommends $pkgs; }
+# Both ship in the devcontainer base images, so this normally does nothing.
+if ! command -v jq >/dev/null || [ ! -d /usr/share/zoneinfo ]; then
+  apt-get update
+  apt-get install -y --no-install-recommends jq tzdata
+  rm -rf /var/lib/apt/lists/*
+fi
 
 dest="${_REMOTE_USER_HOME:-$HOME}/.claude"
 mkdir -p "$dest"
