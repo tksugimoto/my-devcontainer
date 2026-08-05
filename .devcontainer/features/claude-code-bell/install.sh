@@ -16,5 +16,8 @@ install -m 755 bell.sh "$dest/bell.sh"
 jq -s '.[0] * .[1]' "$dest/settings.json" claude-settings.json > "$dest/settings.json.tmp"
 mv "$dest/settings.json.tmp" "$dest/settings.json"
 
-[ -n "$_REMOTE_USER" ] && chown -R "$_REMOTE_USER" "$dest"
-exit 0
+# Only what this feature touched: ~/.claude also holds session and project history,
+# which is thousands of inodes on a persisted home and needs no ownership change.
+if [ -n "$_REMOTE_USER" ]; then
+  chown "$_REMOTE_USER" "$dest" "$dest/bell.sh" "$dest/settings.json"
+fi

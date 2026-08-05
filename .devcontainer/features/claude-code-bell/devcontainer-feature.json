@@ -3,6 +3,9 @@
 	"version": "1.0.0",
 	"name": "Claude Code Bell",
 	"description": "Notifies via terminal bell when Claude Code completes a task",
+	"installsAfter": [
+		"ghcr.io/anthropics/devcontainer-features/claude-code"
+	],
 	"customizations": {
 		"vscode": {
 			"settings": {
