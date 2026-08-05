@@ -1,0 +1,27 @@
+#!/bin/sh
+# Runs as root at build time. The whole feature folder is copied into the
+# container, so statusline.sh sits next to this script — the workspace is NOT
+# mounted yet, and nothing here may reference it.
+set -e
+cd "$(dirname "$0")"
+
+# jq parses the status line JSON; tzdata backs the TZ set in devcontainer.json.
+pkgs=""
+command -v jq >/dev/null || pkgs="$pkgs jq"
+[ -d /usr/share/zoneinfo ] || pkgs="$pkgs tzdata"
+[ -n "$pkgs" ] && { apt-get update && apt-get install -y --no-install-recommends $pkgs; }
+
+dest="${_REMOTE_USER_HOME:-$HOME}/.claude"
+mkdir -p "$dest"
+install -m 755 statusline.sh "$dest/statusline.sh"
+
+# Merge, never overwrite: settings.json holds unrelated user preferences.
+[ -s "$dest/settings.json" ] || echo '{}' > "$dest/settings.json"
+jq -s '.[0] * .[1]' "$dest/settings.json" claude-settings.json > "$dest/settings.json.tmp"
+mv "$dest/settings.json.tmp" "$dest/settings.json"
+
+# Only what this feature touched: ~/.claude also holds session and project history,
+# which is thousands of inodes on a persisted home and needs no ownership change.
+if [ -n "$_REMOTE_USER" ]; then
+  chown "$_REMOTE_USER" "$dest" "$dest/statusline.sh" "$dest/settings.json"
+fi

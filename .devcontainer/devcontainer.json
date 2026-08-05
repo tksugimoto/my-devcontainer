@@ -11,7 +11,14 @@
 		},
 		"ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {},
 		"./features/claude-code-bell": {},
+		"./features/claude-code-statusline": {},
 		"./features/node-modules-volume": {}
+	},
+
+	// One clock for the whole container: the status line's rate limit reset times
+	// would otherwise disagree with date, git log and npm timestamps.
+	"containerEnv": {
+		"TZ": "Asia/Tokyo"
 	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

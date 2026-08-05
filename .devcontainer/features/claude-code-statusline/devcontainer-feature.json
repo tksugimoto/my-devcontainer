@@ -1,0 +1,9 @@
+{
+	"id": "claude-code-statusline",
+	"version": "1.0.0",
+	"name": "Claude Code Status Line",
+	"description": "Shows model name, git branch, context usage gauge and rate limit usage in the Claude Code status line",
+	"installsAfter": [
+		"ghcr.io/anthropics/devcontainer-features/claude-code"
+	]
+}
