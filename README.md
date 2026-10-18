@@ -66,8 +66,9 @@ docker volume rm <上で表示されたボリューム名>
 
 - `my-devcontainer-gh-auth` ボリュームにマウントし、**リビルドしても `gh auth login` し直さなくてよい**
 - ボリューム名は固定なので、同じホスト上の別フォルダ (worktree など) の devcontainer とも認証を共有する。
-  **テンプレートとして別プロジェクトに使うときは、`devcontainer-feature.json` のボリューム名をプロジェクト名に変える**
-  (同じ名前のままだと、そのホストの全プロジェクトで同じトークンを共有する)
+  **別プロジェクトで使うときは、ボリューム名をプロジェクト名に変える**
+  (同じ名前のままだと、そのホストの全プロジェクトで同じトークンを共有する)。
+  変え方は[別プロジェクトから Feature を使う](#別プロジェクトから-feature-を使う)を参照
 - `postStartCommand` で起動のたびに `gh auth setup-git` を実行し、gh のトークンを git の credential helper にする。
   VS Code の credential helper が非対話で呼ばれてハングするのを避けるため
 - ボリュームを作った直後の 1 回だけログインが必要。ログイン直後のコンテナでは `gh auth setup-git` も手で実行する
@@ -99,6 +100,49 @@ docker volume rm my-devcontainer-gh-auth
 1. このリポジトリをクローンまたはテンプレートとして使用
 2. VS Code で「Dev Containers: Reopen in Container」を実行
 3. コンテナが起動すると Node.js 24 と Claude Code が利用可能
+
+## 別プロジェクトから Feature を使う
+
+このリポジトリを別プロジェクトの `.devcontainer/my-devcontainer` に git submodule として取り込むと、
+カスタム Feature をローカルパスで参照できます (ローカルの Feature は `.devcontainer` の下に置く必要があるため)。
+
+```bash
+git submodule add https://github.com/tksugimoto/my-devcontainer.git .devcontainer/my-devcontainer
+```
+
+### ボリューム名を上書きする
+
+Feature が宣言するボリューム名は、利用側の `devcontainer.json` の `mounts` で同じ `target` を指定すれば上書きできます。
+`mounts` は `target` ごとに後勝ちで、`devcontainer.json` は Feature より後に適用されるためです。
+Feature の `postCreateCommand` / `postStartCommand` はそのまま使われるので、Feature をコピーする必要はありません。
+
+```jsonc
+{
+	"features": {
+		"./my-devcontainer/.devcontainer/features/claude-config-volume": {},
+		"./my-devcontainer/.devcontainer/features/gh-auth-volume": {}
+	},
+	// Override the volume names the features declare.
+	"mounts": [
+		{
+			"source": "<project>-claude-config-${devcontainerId}",
+			"target": "/home/vscode/.claude",
+			"type": "volume"
+		},
+		{
+			"source": "<project>-gh-auth",
+			"target": "/home/vscode/.config/gh",
+			"type": "volume"
+		}
+	]
+}
+```
+
+上書きできているかは、マージ後の設定で確かめられます (各 `target` のマウントが 1 つずつになっていればよい)。
+
+```bash
+npx @devcontainers/cli read-configuration --workspace-folder . --include-merged-configuration
+```
 
 ## ディレクトリ構成
 
